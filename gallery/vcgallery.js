@@ -66,14 +66,13 @@
 						next = $(this).children(".vc-gallery-item").first();
 					}
 				}
-
-				if (next !== null)
-				{
-					current.fadeOut(setting.speed,function(){
-						$(this).removeClass("current");
-						next.fadeIn(setting.speed,function(){$(this).addClass("current")});
-					});
-				}
+			}
+			if (next !== null)
+			{
+				current.fadeOut(setting.speed,function(){
+					$(this).removeClass("current");
+					next.fadeIn(setting.speed,function(){$(this).addClass("current")});
+				});
 			}
 		};
 

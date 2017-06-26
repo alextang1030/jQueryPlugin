@@ -1,7 +1,8 @@
+
 (function($){
 	$.vcLightbox = function(options) {
 		var setting = $.extend({
-			id: "vclb-"+$.now(),
+			id: "vclb"+$.now(),
 			close_btn	: true,
 			ele	:	null,
 			content : "",
@@ -11,7 +12,7 @@
 			youtubeUrl : "",
 			width : null,
 			height: null,
-			animationEvent: function(){
+			AnimationEvent: function(){
 			  var t,
 			      el = document.createElement("fakeelement");
 
@@ -39,16 +40,15 @@
 			    }
 			}
 		},options);
-
 		if (setting.youtubeEmbed && setting.youtubeUrl != "")
 		{
-			setting.content += '<iframe class="lb-youtube" width="'+(setting.width == null ? '640px' : setting.width) +'" '+
+			setting.content += '<iframe class="vc-lb-youtube" width="'+(setting.width == null ? '640px' : setting.width) +'" '+
 				'height="'+(setting.height == null ? '360px' : setting.height) +'" '+
 				'src="https://www.youtube.com/embed/'+setting.getId(setting.youtubeUrl)+'" frameborder="0" allowfullscreen></iframe>'
 		}
-		setting.ele = $("<div>").addClass("lb-wrapper").attr("id",setting.id).attr("close-btn",setting.close_btn).append(
-			$("<div>").addClass("lb-container").append(
-				$("<div>").addClass("lb-body").html(setting.content)
+		setting.ele = $("<div>").addClass("vc-lb-wrapper").attr("id",setting.id).attr("close-btn",setting.close_btn).append(
+			$("<div>").addClass("vc-lb-container").append(
+				$("<div>").addClass("vc-lb-body").html(setting.content)
 			)
 			.bind("mousemove",function(e){
 				var ClientX = e.clientX-this.getBoundingClientRect().left;
@@ -70,17 +70,17 @@
 
 					if (ClientX >= eleX && ClientY <= eleY)
 					{
-						$("#"+setting.id).addClass("closing").one(setting.animationEvent, function(event) {
+						$("#"+setting.id).addClass("closing").one(setting.AnimationEvent(), function(event) {
 							$("#"+setting.id).remove();
 						});
 					}
 				}
 			})
-		).append($("<div>").addClass("lb-backdrag")
+		).append($("<div>").addClass("vc-lb-backdrag")
 			.bind("click",function(e){
 				if (e.target == $(this)[0] && setting.backdrag_close)
 				{
-					$("#"+setting.id).addClass("closing").one(setting.animationEvent, function(event) {
+					$("#"+setting.id).addClass("closing").one(setting.AnimationEvent(), function(event) {
 						$("#"+setting.id).remove();
 					});
 				}

@@ -2,18 +2,33 @@
 <head>
 <script type="text/javascript" src="./js/jquery-3.2.1.min.js" ></script>
 
-<!-- Light box text -->
+<!-- Light box test -->
 <script type="text/javascript" src="./lightbox/vclightbox.js" ></script>
 <link rel="stylesheet" href="./lightbox/vclightbox.min.css" type="text/css" />
 
+<!-- Gallery test -->
+<script type="text/javascript" src="./gallery/vcgallery.js" ></script>
+<link rel="stylesheet" href="./gallery/vcgallery.min.css" type="text/css" />
+
 </head>
 <body>
+
+
+<!-- Gallery box test -->
+<div id="gallery">
+	<img src="./gallery/demo/img/bonfire_background.jpg">
+	<img src="./gallery/demo/img/bonfire_celebration.jpg">
+	<img src="./gallery/demo/img/bonfire_festival.jpg">
+</div>
+
 <script>
-<!-- Light box text -->
 $(document).ready(function(){
+	<!-- Light box test -->
 	$.vcLightbox({
 		content : "this is just a testing content"
 	});
+
+	$("#gallery").vcGallery();
 });
 </script>
 </body>

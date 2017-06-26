@@ -28,7 +28,7 @@
 	-o-animation: $content
 	animation: $content
 
-.lb-wrapper
+.vc-lb-wrapper
 	position: fixed
 	top: 0
 	left: 0
@@ -40,7 +40,7 @@
 	-webkit-align-items: flex-start
 	align-items: flex-start
 	@include animation(lb-open 0.3s forwards)
-	.lb-backdrag
+	.vc-lb-backdrag
 		z-index: -1
 		position: absolute
 		top: 0
@@ -48,7 +48,7 @@
 		height: 100%
 		width: 100%
 		background: rgba(#000,0.7)
-	.lb-container
+	.vc-lb-container
 		z-index: 1
 		background: #FFF
 		position: relative
@@ -58,10 +58,10 @@
 		align-self: center
 		margin: auto
 		@include animation(lb-open-body 0.5s forwards)
-		.lb-youtube
+		.vc-lb-youtube
 			max-width: 100vw
 	&[close-btn="true"]
-		.lb-container
+		.vc-lb-container
 			min-width: 30px
 			min-height: 30px
 			&.onClose
@@ -77,7 +77,7 @@
 				z-index: 100
 	&.closing
 		@include animation(lb-close 0.3s forwards)
-		.lb-container
+		.vc-lb-container
 			@include animation(lb-close-body 0.3s forwards)
 @include keyframes(lb-open)
 	from

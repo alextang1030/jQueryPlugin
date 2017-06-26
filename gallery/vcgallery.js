@@ -1,23 +1,36 @@
 (function($){
 	$.fn.vcGallery = function(options){
 		var setting = $.extend({
+			wrapper: null,
 			ele: this,
 			width: "570px",
 			height: "450px",
 			loop : true,
 			speed: 300,
+			items: 3,
 		},options);
 		var between = function(find,from,to) {
 			return (find >=from && find <= to ? true:false);
 		}
 		this.initialize = function(){
+			setting.wrapper = $('<div>').addClass("vc-gallery-wrapper");
 			setting.ele.addClass("vc-gallery-container");
 			setting.ele.children("*").addClass("vc-gallery-item");
 			setting.ele.children(".vc-gallery-item").first().addClass("current");
-			if (setting.width !== null) setting.ele.css({width:setting.width});
-			if (setting.height !== null) setting.ele.css({height:setting.height});
+			if (setting.width !== null)
+			{
+				setting.ele.children(".vc-gallery-item").css({width:setting.width});
+				var wrapperW = setting.ele.children(".vc-gallery-item").outerWidth()*setting.items;
+				setting.wrapper.css({width: wrapperW});
+			}
+			if (setting.height !== null)
+			{
+				setting.ele.children(".vc-gallery-item").css({height:setting.height});
+				setting.ele.css({height:setting.height});
+				setting.wrapper.css({height:setting.height});
+			}
 
-			setting.ele.bind('mousemove', function( e ){
+			setting.wrapper.bind('mousemove', function( e ){
 				var ClientX = e.clientX-this.getBoundingClientRect().left;
 				var ClientY = e.clientY-this.getBoundingClientRect().top;
 				var prevX = 0;
@@ -33,6 +46,7 @@
 				else
 					$(this).removeClass("vcgOnNext");
 			}).bind('click',function(e){setting.ele.change(e);});
+			setting.ele.wrap(setting.wrapper);
 			return this;
 		};
 
@@ -41,39 +55,8 @@
 				return false;
 			var current = $(this).children(".current");
 			var next = null;
-			if ($(this).hasClass("vcgOnPrev"))
-			{
-				if (current.prev().length)
-				{
-					next = current.prev();
-				}
-				else {
-					if (setting.loop)
-					{
-						next = $(this).children(".vc-gallery-item").last();
-					}
-				}
-			}
-			if ($(this).hasClass("vcgOnNext"))
-			{
-				if (current.next().length)
-				{
-					next = current.next();
-				}
-				else {
-					if (setting.loop)
-					{
-						next = $(this).children(".vc-gallery-item").first();
-					}
-				}
-			}
-			if (next !== null)
-			{
-				current.fadeOut(setting.speed,function(){
-					$(this).removeClass("current");
-					next.fadeIn(setting.speed,function(){$(this).addClass("current")});
-				});
-			}
+			var isEnd = false;
+			
 		};
 
 		return this.initialize();

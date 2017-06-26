@@ -28,22 +28,24 @@
 	-o-animation: $content
 	animation: $content
 
-
-.vc-gallery-container
-	position: relative
-	list-style: none
-	font-size: 0
-	padding: 0
-	margin: 0
+.vc-gallery-wrapper
 	overflow: hidden
-	white-space: nowrap
-	.vc-gallery-item
-		display: inline
-		width: 100%
-		height: 100%
-		> img
-			width: 100%
-			height: 100%
+	position: relative
+	.vc-gallery-container
+		position: absolute
+		top: 0
+		left: 0
+		list-style: none
+		font-size: 0
+		padding: 0
+		margin: 0
+		white-space: nowrap
+		.vc-gallery-item
+			display: inline-block
+			position: relative
+			> img
+				width: 100%
+				height: 100%
 	&::before
 		content: ""
 		background: url("./img/icon/icon-prev.png") #ccc center center no-repeat

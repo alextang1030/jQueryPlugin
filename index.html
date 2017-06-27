@@ -11,6 +11,13 @@
 <script type="text/javascript" src="./gallery/vcgallery.js" ></script>
 <link rel="stylesheet" href="./gallery/vcgallery.min.css" type="text/css" />
 
+<!-- Parallax test -->
+<script type="text/javascript" src="./parallax/vcparallax.js" ></script>
+<link rel="stylesheet" href="./parallax/vcparallax.min.css" type="text/css" />
+
+
+<link rel="stylesheet" href="./assets/style.min.css" type="text/css" />
+
 </head>
 <body>
 <!-- Light box test -->
@@ -38,6 +45,16 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
 	$("#gallery").vcGallery();
+});
+</script>
+
+<!-- Parallax box test -->
+<div id="parallax" data-image-src="./gallery/demo/img/bonfire_background.jpg">
+
+</div>
+<script>
+$(document).ready(function(){
+	$("#parallax").vcParallax();
 });
 </script>
 </body>

@@ -45,18 +45,32 @@
 					$(this).addClass("vcgOnNext");
 				else
 					$(this).removeClass("vcgOnNext");
-			}).bind('click',function(e){setting.ele.change(e);});
+			}).bind('click',function(e){
+				if (e.target != $(this)[0])
+					return false;
+				// if ($(this).hasClass("scrolling"))
+				// {
+				// 	return false;
+				// }
+				$(this).addClass("scrolling");
+				var self = $(this);
+				var removeEle = null;
+				if ($(this).hasClass("vcgOnPrev"))
+				{
+					removeEle = $(this).find(".vc-gallery-item:not(.removing)").last();
+					var newEle = removeEle.clone().css({width:0});
+					removeEle.addClass("removing");
+					setting.ele.prepend(newEle);
+					newEle.animate({width:setting.width},"slow",function(){
+
+						removeEle.animate({width:0},"slow",function(){
+							$(this).remove();
+						});
+					});
+				}
+			});
 			setting.ele.wrap(setting.wrapper);
 			return this;
-		};
-
-		this.change = function(e){
-			if (e.target != this[0])
-				return false;
-			var current = $(this).children(".current");
-			var next = null;
-			var isEnd = false;
-			
 		};
 
 		return this.initialize();

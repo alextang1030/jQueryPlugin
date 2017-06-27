@@ -12,9 +12,22 @@
 
 </head>
 <body>
-
+<!-- Light box test -->
+<h1>Light box demo</h1>
+<button id="lbdemo">Click to open</button>
+<script>
+$(document).ready(function(){
+	$('#lbdemo').on('click',function(e){
+		$.vcLightbox({
+			content : "this is just a testing content"
+		});
+	});
+});
+</script>
+<hr width="100%">
 
 <!-- Gallery box test -->
+<h1> Gallery demo </h1>
 <ul id="gallery">
 	<li><img src="./gallery/demo/img/bonfire_background.jpg"></li>
 	<li><img src="./gallery/demo/img/bonfire_celebration.jpg"></li>
@@ -23,11 +36,6 @@
 
 <script>
 $(document).ready(function(){
-	<!-- Light box test -->
-	$.vcLightbox({
-		content : "this is just a testing content"
-	});
-
 	$("#gallery").vcGallery();
 });
 </script>

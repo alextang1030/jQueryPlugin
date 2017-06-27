@@ -4,10 +4,11 @@
       imgSrc : null,
       height: null,
       width: null,
-      xPos: 0,
-      yPos: 0,
+      xPos: null,
+      yPos: null,
       speed: 2,
     },options,{
+      id: "vcpa"+$.now(),
       ele: this,
       obj : null,
     });
@@ -19,29 +20,45 @@
 
       if (setting.width === null) setting.width = this.outerWidth();
       if (setting.height === null) setting.height = this.outerHeight();
-      setting.obj = $("<div>").addClass("vc-parallax-container").append(
-        $("<img>").attr("src",setting.imgSrc).addClass("vc-parallax-image")
-      )
-      .css({
-        width:setting.width,
-        height:setting.height,
-        top:this.offset().top - $(window).scrollTop(),
-        left:this.offset().left,
-      })
-      .insertBefore(this);
+      setting.obj = $("<div>").addClass("vc-parallax-container")
+        .attr("id",setting.id)
+        .append(
+          $("<img>").attr("src",setting.imgSrc).addClass("vc-parallax-image")
+        )
+        .css({
+          width:setting.width,
+          height:setting.height,
+          top:this.offset().top - $(window).scrollTop(),
+          left:this.offset().left,
+        });
+
+      setting.obj.insertBefore(this);
+      if (setting.xPos === null) setting.xPos = (setting.obj.children(".vc-parallax-image").width()/2)*-1;
+      if (setting.yPos === null) setting.yPos = (setting.obj.children(".vc-parallax-image").height()/2)*-1;
+      setting.obj.children(".vc-parallax-image").css({
+        top: setting.xPos,
+        left: setting.yPos,
+      });
+
       prevScoll = $(window).scrollTop();
       return this;
     };
     this.winScroll = function(){
       var newTop = setting.ele.offset().top - $(window).scrollTop();
+      var newScroll = (prevScoll - $(window).scrollTop());
+      var img = setting.obj.children(".vc-parallax-image");
       if (prevScoll < $(window).scrollTop())
       {
-        // Up
-        //setting.obj.children(".vc-parallax-image").css({"margin-top"})
+        // Scroll down
+        newScroll += setting.speed;
+        // if (img.offset().top >= (img.height() - setting.obj.height())) newScroll = 0;
       }
       else {
-        //down
+        // Scroll up
+        newScroll -= setting.speed;
+        // if (img.offset().top <= 0) newScroll = 0;
       }
+      img.css({"top":"-=" + newScroll});
       setting.obj.css({
         top: setting.ele.offset().top - $(window).scrollTop()
       });

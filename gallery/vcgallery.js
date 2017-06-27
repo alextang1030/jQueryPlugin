@@ -4,60 +4,80 @@
 			wrapper: null,
 			ele: this,
 			width: "570px",
-			height: "450px",
+			height: "78.95%",
 			loop : true,
 			speed: 300,
+			aspeed : 5000,
+			animate : true,
 			items: 1,
 		},options);
 		var between = function(find,from,to) {
 			return (find >=from && find <= to ? true:false);
 		}
-
-		var looping = function(e){
-			if (e.target != $(this)[0])
-				return false;
-			var self = $(this);
+		var timmer;
+		var looping = function(ele){
 			var removeEle = null;
-			if ($(this).hasClass("vcgOnPrev"))
+			if (setting.loop && setting.animate)
 			{
-				removeEle = $(this).find(".vc-gallery-item:not(.removing)").last();
-				var newEle = removeEle.clone().css({"margin-left":"-"+setting.width});
+				clearTimeout(timmer);
+				timmer = setTimeout(function(){animation();},setting.aspeed);
+			}
+			var width = ele.width();
+			width = width * -1;
+			if (ele.hasClass("vcgOnPrev"))
+			{
+				removeEle = ele.find(".vc-gallery-item:not(.removing)").last();
+				var newEle = removeEle.clone().css({"margin-left":width});
 				removeEle.addClass("removing");
 				setting.ele.prepend(newEle);
-				$(this).find(".vc-gallery-item.current").removeClass("current").prev().addClass("current");
+				ele.find(".vc-gallery-item.current").removeClass("current").prev().addClass("current");
 				newEle.animate({"margin-left":0},setting.speed,function(){
+					$(this).css({"margin-left":""});
 					removeEle.remove();
 				});
 			}
 			else
 			{
-				removeEle = $(this).find(".vc-gallery-item:not(.removing)").first();
-				var newEle = removeEle.clone();
+				removeEle = ele.find(".vc-gallery-item:not(.removing)").first();
+				var newEle = removeEle.clone().removeClass("current");
 				removeEle.addClass("removing");
 				setting.ele.append(newEle);
-				$(this).find(".vc-gallery-item.current").removeClass("current").next().addClass("current");
-				removeEle.animate({"margin-left":"-"+setting.width},setting.speed,function(){
+				ele.find(".vc-gallery-item.current").removeClass("current").next().addClass("current");
+				removeEle.animate({"margin-left":width},setting.speed,function(){
 					removeEle.remove();
 				});
 			}
 		}
 
-		var change = function(e){
-			if (e.target != $(this)[0])
-				return false;
-			var current = $(this).find(".vc-gallery-item.current");
-			var list = $(this).find(".vc-gallery-item");
+		var animation = function() {
+			var ele = setting.ele.parent(".vc-gallery-wrapper");
+			var width = ele.outerWidth()*-1;
+			removeEle = ele.find(".vc-gallery-item:not(.removing)").first();
+			var newEle = removeEle.clone();
+			removeEle.addClass("removing");
+			setting.ele.append(newEle);
+			ele.find(".vc-gallery-item.current").removeClass("current").next().addClass("current");
+			removeEle.animate({"margin-left":width},setting.speed,function(){
+				removeEle.remove();
+				timmer = setTimeout(function(){animation();},setting.aspeed);
+			});
+		}
 
+		var change = function(ele){
+
+			var current = ele.find(".vc-gallery-item.current");
+			var list = ele.find(".vc-gallery-item");
+			var width = ele.outerWidth();
 			if (list.length == setting.items)
 				return false;
-			if ($(this).hasClass("vcgOnPrev"))
+			if (ele.hasClass("vcgOnPrev"))
 			{
 				if (current[0] == list.first()[0])
 					return false;
 				if (current.prev().length)
 				{
 					current.removeClass("current").prev().addClass("current");
-					list.first().animate({"margin-left":"+="+setting.width},setting.speed);
+					list.first().animate({"margin-left":"+="+width},setting.speed);
 				}
 			}
 			else
@@ -67,30 +87,18 @@
 				if (current.next().length)
 				{
 					current.removeClass("current").next().addClass("current");
-					list.first().animate({"margin-left":"-="+setting.width},setting.speed);
+					list.first().animate({"margin-left":"-="+width},setting.speed);
 				}
 			}
 		}
 
 		this.initialize = function(){
-			setting.wrapper = $('<div>').addClass("vc-gallery-wrapper");
+			wrapper = $('<div>').addClass("vc-gallery-wrapper");
 			setting.ele.addClass("vc-gallery-container");
 			setting.ele.children("*").addClass("vc-gallery-item");
 			setting.ele.children(".vc-gallery-item").first().addClass("current");
-			if (setting.width !== null)
-			{
-				setting.ele.children(".vc-gallery-item").css({width:setting.width});
-				var wrapperW = setting.ele.children(".vc-gallery-item").outerWidth()*setting.items;
-				setting.wrapper.css({width: wrapperW});
-			}
-			if (setting.height !== null)
-			{
-				setting.ele.children(".vc-gallery-item").css({height:setting.height});
-				setting.ele.css({height:setting.height});
-				setting.wrapper.css({height:setting.height});
-			}
 
-			setting.wrapper.bind('mousemove', function( e ){
+			wrapper.bind('mousemove', function( e ){
 				var ClientX = e.clientX-this.getBoundingClientRect().left;
 				var ClientY = e.clientY-this.getBoundingClientRect().top;
 				var prevX = 0;
@@ -105,11 +113,41 @@
 					$(this).addClass("vcgOnNext");
 				else
 					$(this).removeClass("vcgOnNext");
-			}).bind('click',(setting.loop ? looping : change));
-			setting.ele.wrap(setting.wrapper);
+			}).bind('click',function(e){
+				if (e.target != $(this)[0])
+					return false;
+				if (setting.loop) looping($(this)); else change($(this));
+			});
+			setting.ele.wrap(wrapper);
+			setting.wrapper = setting.ele.parent();
+			setting.wrapper.append($("<div>").addClass("vs-gallery-overlayer"));
+
+			if (setting.width !== null)
+			{
+				var temp = $("<div>").css({width:setting.width});
+				var wrapperW = temp.outerWidth()*setting.items;
+				setting.wrapper.css({width: wrapperW});
+				setting.width = setting.wrapper.outerWidth()/setting.items;
+				setting.ele.children(".vc-gallery-item").css({width:setting.width});
+			}
+
+			if (setting.height !== null)
+			{
+				setting.wrapper.children(".vs-gallery-overlayer").css({"padding-bottom":setting.height});
+			}
+			if (setting.loop && setting.animate)
+			{
+				timmer = setTimeout(function(){animation();},setting.aspeed);
+			}
 			return this;
 		};
-
+		this.winResize = function(){
+			setting.width = setting.wrapper.outerWidth()/setting.items;
+			setting.ele.children(".vc-gallery-item").css({width:setting.width});
+		}
+		$(window).resize(function(){
+			setting.ele.winResize();
+		});
 		return this.initialize();
 	}
 })(jQuery);

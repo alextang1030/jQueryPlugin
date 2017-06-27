@@ -7,11 +7,71 @@
 			height: "450px",
 			loop : true,
 			speed: 300,
-			items: 3,
+			items: 1,
 		},options);
 		var between = function(find,from,to) {
 			return (find >=from && find <= to ? true:false);
 		}
+
+		var looping = function(e){
+			if (e.target != $(this)[0])
+				return false;
+			var self = $(this);
+			var removeEle = null;
+			if ($(this).hasClass("vcgOnPrev"))
+			{
+				removeEle = $(this).find(".vc-gallery-item:not(.removing)").last();
+				var newEle = removeEle.clone().css({"margin-left":"-"+setting.width});
+				removeEle.addClass("removing");
+				setting.ele.prepend(newEle);
+				$(this).find(".vc-gallery-item.current").removeClass("current").prev().addClass("current");
+				newEle.animate({"margin-left":0},setting.speed,function(){
+					removeEle.remove();
+				});
+			}
+			else
+			{
+				removeEle = $(this).find(".vc-gallery-item:not(.removing)").first();
+				var newEle = removeEle.clone();
+				removeEle.addClass("removing");
+				setting.ele.append(newEle);
+				$(this).find(".vc-gallery-item.current").removeClass("current").next().addClass("current");
+				removeEle.animate({"margin-left":"-"+setting.width},setting.speed,function(){
+					removeEle.remove();
+				});
+			}
+		}
+
+		var change = function(e){
+			if (e.target != $(this)[0])
+				return false;
+			var current = $(this).find(".vc-gallery-item.current");
+			var list = $(this).find(".vc-gallery-item");
+
+			if (list.length == setting.items)
+				return false;
+			if ($(this).hasClass("vcgOnPrev"))
+			{
+				if (current[0] == list.first()[0])
+					return false;
+				if (current.prev().length)
+				{
+					current.removeClass("current").prev().addClass("current");
+					list.first().animate({"margin-left":"+="+setting.width},setting.speed);
+				}
+			}
+			else
+			{
+				if (current[0] == list.last()[0])
+					return false;
+				if (current.next().length)
+				{
+					current.removeClass("current").next().addClass("current");
+					list.first().animate({"margin-left":"-="+setting.width},setting.speed);
+				}
+			}
+		}
+
 		this.initialize = function(){
 			setting.wrapper = $('<div>').addClass("vc-gallery-wrapper");
 			setting.ele.addClass("vc-gallery-container");
@@ -45,30 +105,7 @@
 					$(this).addClass("vcgOnNext");
 				else
 					$(this).removeClass("vcgOnNext");
-			}).bind('click',function(e){
-				if (e.target != $(this)[0])
-					return false;
-				// if ($(this).hasClass("scrolling"))
-				// {
-				// 	return false;
-				// }
-				$(this).addClass("scrolling");
-				var self = $(this);
-				var removeEle = null;
-				if ($(this).hasClass("vcgOnPrev"))
-				{
-					removeEle = $(this).find(".vc-gallery-item:not(.removing)").last();
-					var newEle = removeEle.clone().css({width:0});
-					removeEle.addClass("removing");
-					setting.ele.prepend(newEle);
-					newEle.animate({width:setting.width},"slow",function(){
-
-						removeEle.animate({width:0},"slow",function(){
-							$(this).remove();
-						});
-					});
-				}
-			});
+			}).bind('click',(setting.loop ? looping : change));
 			setting.ele.wrap(setting.wrapper);
 			return this;
 		};

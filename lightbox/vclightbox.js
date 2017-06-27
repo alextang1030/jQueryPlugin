@@ -6,6 +6,7 @@
 			close_btn	: true,
 			ele	:	null,
 			content : "",
+			isIE : /*@cc_on!@*/false || !!document.documentMode,
 			closing : null,
 			backdrag_close : true,
 			youtubeEmbed : false,
@@ -86,7 +87,7 @@
 				}
 			})
 		);
-
+		if (setting.isIE) setting.ele.addClass("isIE");
 		if (setting.width !== null) setting.ele.css({"width":setting.width});
 		if (setting.height !== null) setting.ele.css({"height":setting.height});
 

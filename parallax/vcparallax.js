@@ -1,12 +1,15 @@
 (function($){
   $.fn.vcParallax = function(options){
     var setting = $.extend({
-      ele: this,
-      obj : null,
       imgSrc : null,
       height: null,
-      width: null
-    },options);
+      width: null,
+      xPos: 0,
+      yPos: 0
+    },options,{
+      ele: this,
+      obj : null,
+    });
 
     this.initialize = function(){
       if (this.attr("data-image-src")) setting.imgSrc = this.attr("data-image-src");
@@ -17,10 +20,15 @@
       if (setting.height === null) setting.height = this.outerHeight();
       return this;
     };
+    this.winScroll = function(){
 
+    }
     this.winResize = function(){
 
 		}
+    $(window).scroll(function(){
+      setting.ele.winScroll();
+    });
 		$(window).resize(function(){
 			setting.ele.winResize();
 		});

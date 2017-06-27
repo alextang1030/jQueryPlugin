@@ -1,8 +1,6 @@
 (function($){
 	$.fn.vcGallery = function(options){
 		var setting = $.extend({
-			wrapper: null,
-			ele: this,
 			width: "570px",
 			height: "78.95%",
 			loop : true,
@@ -10,7 +8,10 @@
 			aspeed : 5000,
 			animate : true,
 			items: 1,
-		},options);
+		},options,{
+			wrapper: null,
+			ele: this,
+		});
 		var between = function(find,from,to) {
 			return (find >=from && find <= to ? true:false);
 		}

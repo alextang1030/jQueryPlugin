@@ -2,17 +2,18 @@
 (function($){
 	$.vcLightbox = function(options) {
 		var setting = $.extend({
-			id: "vclb"+$.now(),
 			close_btn	: true,
-			ele	:	null,
 			content : "",
-			isIE : /*@cc_on!@*/false || !!document.documentMode,
 			closing : null,
 			backdrag_close : true,
 			youtubeEmbed : false,
 			youtubeUrl : "",
 			width : null,
 			height: null,
+		},options,{
+			id: "vclb"+$.now(),
+			ele	:	null,
+			isIE : /*@cc_on!@*/false || !!document.documentMode,
 			AnimationEvent: function(){
 			  var t,
 			      el = document.createElement("fakeelement");
@@ -40,7 +41,7 @@
 			        return 'error';
 			    }
 			}
-		},options);
+		});
 		if (setting.youtubeEmbed && setting.youtubeUrl != "")
 		{
 			setting.content += '<iframe class="vc-lb-youtube" width="'+(setting.width == null ? '640px' : setting.width) +'" '+

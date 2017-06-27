@@ -1,0 +1,35 @@
+@mixin transition-amin($value)
+	-webkit-transition: $value
+	-moz-transition: $value
+	-ms-transition: $value
+	-o-transition: $value
+	transition: $value
+
+@mixin transform-amin($anim)
+	-moz-transform: $anim
+	-ms-transform: $anim
+	-o-transform: $anim
+	transform: $anim
+	-webkit-transform: $anim
+
+@mixin keyframes($name)
+	@-webkit-keyframes #{$name}
+		@content
+	@-moz-keyframes #{$name}
+		@content
+	@-ms-keyframes #{$name}
+		@content
+	@keyframes #{$name}
+		@content
+
+@mixin animation($content)
+	-webkit-animation: $content
+	-moz-animation: $content
+	-o-animation: $content
+	animation: $content
+
+
+.vc-parallax-container
+  overflow: hidden
+  position: fixed
+  z-index: -1

@@ -1,4 +1,4 @@
-(function($){
+	(function($){
   $.fn.vcParallax = function(options){
     var setting = $.extend({
       imgSrc : null,
@@ -11,6 +11,7 @@
       id: "vcpa"+$.now(),
       ele: this,
       obj : null,
+			img : null
     });
     var prevScoll = 0;
     this.initialize = function(){
@@ -33,11 +34,15 @@
         });
 
       setting.obj.insertBefore(this);
-      if (setting.xPos === null) setting.xPos = (setting.obj.children(".vc-parallax-image").width()/2)*-1;
-      if (setting.yPos === null) setting.yPos = (setting.obj.children(".vc-parallax-image").height()/2)*-1;
-      setting.obj.children(".vc-parallax-image").css({
-        top: setting.xPos,
-        left: setting.yPos,
+
+			setting.img = setting.obj.children(".vc-parallax-image");
+      if (setting.xPos === null)
+				setting.xPos = 0;//(setting.img.width()/2)*-1;
+      if (setting.yPos === null)
+				setting.yPos = (setting.img.height()/4)*-1;
+      setting.img.css({
+        top: setting.yPos,
+        left: setting.xPos,
       });
 
       prevScoll = $(window).scrollTop();
@@ -47,25 +52,36 @@
       var newTop = setting.ele.offset().top - $(window).scrollTop();
       var newScroll = (prevScoll - $(window).scrollTop());
       var img = setting.obj.children(".vc-parallax-image");
+			setting.obj.css({
+        top: setting.ele.offset().top - $(window).scrollTop()
+      });
+			var action = false;
+			var currentTop = img.offset().top *-1;
+			var endTop = setting.xPos + (img.height() - setting.obj.height());
+
       if (prevScoll < $(window).scrollTop())
       {
         // Scroll down
         newScroll += setting.speed;
-        // if (img.offset().top >= (img.height() - setting.obj.height())) newScroll = 0;
+				if (currentTop < endTop) action = true;
       }
       else {
         // Scroll up
         newScroll -= setting.speed;
-        // if (img.offset().top <= 0) newScroll = 0;
+				if (currentTop > setting.yPos) action = true;
       }
-      img.css({"top":"-=" + newScroll});
-      setting.obj.css({
-        top: setting.ele.offset().top - $(window).scrollTop()
-      });
+
       prevScoll = $(window).scrollTop();
+			if (action) img.css({"top":"-=" + newScroll});
+
     }
     this.winResize = function(){
-
+			setting.obj.css({
+        top: setting.ele.offset().top - $(window).scrollTop(),
+				left: setting.ele.offset().left,
+				width: setting.ele.outerWidth(),
+				height: setting.ele.outerHeight(),
+      });
 		}
     $(window).scroll(function(){
       setting.ele.winScroll();

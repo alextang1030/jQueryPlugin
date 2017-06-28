@@ -55,24 +55,21 @@
 			setting.obj.css({
         top: setting.ele.offset().top - $(window).scrollTop()
       });
-			var action = false;
 			var currentTop = img.offset().top *-1;
 			var endTop = setting.xPos + (img.height() - setting.obj.height());
 
       if (prevScoll < $(window).scrollTop())
       {
-        // Scroll down
+        // Scroll down image go up
         newScroll += setting.speed;
-				if (currentTop < endTop) action = true;
       }
       else {
-        // Scroll up
+        // Scroll up image go down
         newScroll -= setting.speed;
-				if (currentTop > setting.yPos) action = true;
       }
 
       prevScoll = $(window).scrollTop();
-			if (action) img.css({"top":"-=" + newScroll});
+			img.css({"top":"-=" + newScroll});
 
     }
     this.winResize = function(){

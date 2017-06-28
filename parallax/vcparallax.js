@@ -6,12 +6,13 @@
       width: null,
       xPos: null,
       yPos: null,
-      speed: 2,
+      speed: 10,
     },options,{
       id: "vcpa"+$.now(),
       ele: this,
       obj : null,
-			img : null
+			img : null,
+      pos: 0
     });
     var prevScoll = 0;
     this.initialize = function(){
@@ -49,28 +50,32 @@
       return this;
     };
     this.winScroll = function(){
-      var newTop = setting.ele.offset().top - $(window).scrollTop();
-      var newScroll = (prevScoll - $(window).scrollTop());
-      var img = setting.obj.children(".vc-parallax-image");
 			setting.obj.css({
         top: setting.ele.offset().top - $(window).scrollTop()
       });
-			var currentTop = img.offset().top *-1;
-			var endTop = setting.xPos + (img.height() - setting.obj.height());
 
+      var newPos = setting.yPos + $(window).scrollTop();
+      if ($(window).scrollTop() > 0)
+      {
+        var temp = Math.round($(window).scrollTop()/setting.speed);
+        for(var i= 0;i < temp; i++)
+        {
+          newPos -= 1;
+        }
+      }
       if (prevScoll < $(window).scrollTop())
       {
         // Scroll down image go up
-        newScroll += setting.speed;
+        // setting.pos -= setting.speed;
       }
       else {
         // Scroll up image go down
-        newScroll -= setting.speed;
+        // setting.pos += setting.speed;
       }
-
+      setting.img.css({
+        top: newPos
+      });
       prevScoll = $(window).scrollTop();
-			img.css({"top":"-=" + newScroll});
-
     }
     this.winResize = function(){
 			setting.obj.css({

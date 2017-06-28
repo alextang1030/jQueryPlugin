@@ -32,8 +32,10 @@
           height:setting.height,
           top:this.offset().top - $(window).scrollTop(),
           left:this.offset().left,
+          overflow: "hidden",
+          position: "fixed",
+          "z-index": -1
         });
-
       setting.obj.insertBefore(this);
 
 			setting.img = setting.obj.children(".vc-parallax-image");
@@ -44,6 +46,8 @@
       setting.img.css({
         top: setting.yPos,
         left: setting.xPos,
+        position: "absolute",
+        "min-width": "100%"
       });
 
       prevScoll = $(window).scrollTop();

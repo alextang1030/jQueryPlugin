@@ -2,14 +2,15 @@
   $.fn.vcParallax = function(options){
     var setting = $.extend({
       imgSrc : null,
-      height: null,
-      width: null,
       xPos: null,
       yPos: null,
       speed: 10,
+			zIndex: -1,
     },options,{
       id: "vcpa"+$.now(),
       ele: this,
+			height: null,
+      width: null,
       obj : null,
 			img : null,
       pos: 0
@@ -17,9 +18,6 @@
     var prevScoll = 0;
     this.initialize = function(){
       if (this.attr("data-image-src")) setting.imgSrc = this.attr("data-image-src");
-      if (this.attr("data-height")) setting.height = this.attr("data-height");
-      if (this.attr("data-width")) setting.width = this.attr("data-width");
-
       if (setting.width === null) setting.width = this.outerWidth();
       if (setting.height === null) setting.height = this.outerHeight();
       setting.obj = $("<div>").addClass("vc-parallax-container")
@@ -34,13 +32,13 @@
           left:this.offset().left,
           overflow: "hidden",
           position: "fixed",
-          "z-index": -1
+          "z-index": setting.zIndex
         });
       setting.obj.insertBefore(this);
 
 			setting.img = setting.obj.children(".vc-parallax-image");
       if (setting.xPos === null)
-				setting.xPos = 0;//(setting.img.width()/2)*-1;
+				setting.xPos = (setting.img.width()/4)*-1;
       if (setting.yPos === null)
 				setting.yPos = (setting.img.height()/4)*-1;
       setting.img.css({
@@ -57,7 +55,6 @@
 			setting.obj.css({
         top: setting.ele.offset().top - $(window).scrollTop()
       });
-
       var newPos = setting.yPos + $(window).scrollTop();
       if ($(window).scrollTop() > 0)
       {
@@ -66,15 +63,6 @@
         {
           newPos -= 1;
         }
-      }
-      if (prevScoll < $(window).scrollTop())
-      {
-        // Scroll down image go up
-        // setting.pos -= setting.speed;
-      }
-      else {
-        // Scroll up image go down
-        // setting.pos += setting.speed;
       }
       setting.img.css({
         top: newPos

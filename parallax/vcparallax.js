@@ -37,13 +37,7 @@
       setting.obj.insertBefore(this);
 
 			setting.img = setting.obj.children(".vc-parallax-image");
-      if (setting.xPos === null)
-				setting.xPos = (setting.img.width()/4)*-1;
-      if (setting.yPos === null)
-				setting.yPos = (setting.img.height()/4)*-1;
       setting.img.css({
-        top: setting.yPos,
-        left: setting.xPos,
         position: "absolute",
         "min-width": "100%"
       });
@@ -54,6 +48,17 @@
 					top:setting.ele.offset().top - $(window).scrollTop(),
           left:setting.ele.offset().left
 				});
+
+				var tempW = setting.img.width() - setting.ele.outerWidth();
+				var tempH = setting.img.height() - setting.ele.outerHeight();
+				if (setting.xPos === null)
+					setting.xPos = (tempW>0)? tempW/2*-1:0;
+	      if (setting.yPos === null)
+					setting.yPos = (tempH>0)? tempH/2*-1:0;
+				setting.img.css({
+	        top: setting.yPos,
+	        left: setting.xPos,
+	      });
 			});
       return this;
     };

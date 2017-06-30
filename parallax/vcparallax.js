@@ -2,15 +2,17 @@
   $.fn.vcParallax = function(options){
     var setting = $.extend({
       imgSrc : null,
-      xPos: null,
-      yPos: null,
       speed: 10,
+			positionX: "center",
+			positionY: "center",
 			zIndex: -1,
     },options,{
       id: "vcpa"+$.now(),
       ele: this,
 			height: null,
       width: null,
+			xPos: null,
+      yPos: null,
       obj : null,
 			img : null,
       pos: 0
@@ -48,16 +50,23 @@
 					top:setting.ele.offset().top - $(window).scrollTop(),
           left:setting.ele.offset().left
 				});
-
 				var tempW = setting.img.width() - setting.ele.outerWidth();
 				var tempH = setting.img.height() - setting.ele.outerHeight();
-				if (setting.xPos === null)
+				var natW = setting.img.width()/setting.ele.outerWidth()*100;
+				if (setting.positionX == "center")
 					setting.xPos = (tempW>0)? tempW/2*-1:0;
-	      if (setting.yPos === null)
+				else
+					setting.xPos = setting.positionX;
+
+	      if (setting.positionY === "center")
 					setting.yPos = (tempH>0)? tempH/2*-1:0;
+				else
+					setting.yPos = setting.positionY;
+				
 				setting.img.css({
 	        top: setting.yPos,
 	        left: setting.xPos,
+					width:natW+"%"
 	      });
 			});
       return this;

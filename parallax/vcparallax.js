@@ -28,8 +28,8 @@
         .css({
           width:setting.width,
           height:setting.height,
-          top:this.offset().top - $(window).scrollTop(),
-          left:this.offset().left,
+          top:setting.ele.offset().top - $(window).scrollTop(),
+          left:setting.ele.offset().left,
           overflow: "hidden",
           position: "fixed",
           "z-index": setting.zIndex
@@ -49,6 +49,12 @@
       });
 
       prevScoll = $(window).scrollTop();
+			$(document).ready(function(){
+				setting.obj.css({
+					top:setting.ele.offset().top - $(window).scrollTop(),
+          left:setting.ele.offset().left
+				});
+			});
       return this;
     };
     this.winScroll = function(){

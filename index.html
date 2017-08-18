@@ -24,12 +24,22 @@
 <h1>Light box demo</h1>
 <button id="lbdemo">Click to open</button>
 <script>
+var lightBox;
 $(document).ready(function(){
 	$('#lbdemo').on('click',function(e){
-		$.vcLightbox({
-			content : "this is just a testing content"
+		lightBox = $.vcLightbox({
+			content : "this is just a testing content<button class='close-test'>Close</button>",
+			youtubeEmbed: true,
+			youtubeUrl: "https://youtu.be/JyD8o9TtVJI",
+			afteClose:function(){
+				alert("close!");
+			}
 		});
 	});
+});
+
+$(document).on('click','.close-test',function(e){
+	lightBox.close();
 });
 </script>
 <hr width="100%">

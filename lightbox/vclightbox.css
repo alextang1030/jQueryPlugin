@@ -39,7 +39,7 @@
   animation: lb-open-body 0.5s forwards;
 }
 
-.vc-lb-wrapper .vc-lb-container .vc-lb-youtube {
+.vc-lb-wrapper .vc-lb-container .vc-lb-youtube > iframe {
   max-width: 100vw;
 }
 

@@ -48,12 +48,8 @@
   min-height: 30px;
 }
 
-.vc-lb-wrapper[close-btn="true"] .vc-lb-container.onClose {
+.vc-lb-wrapper[close-btn="true"] .vc-lb-container .vc-lb-closebutton {
   cursor: pointer;
-}
-
-.vc-lb-wrapper[close-btn="true"] .vc-lb-container::after {
-  content: "";
   position: absolute;
   top: 0;
   right: 0;

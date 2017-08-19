@@ -10,6 +10,9 @@
 			youtubeUrl : "",
 			width : null,
 			height: null,
+			beforeLoad: function(){},
+			afterLoad: function(){},
+			beforeClose: function(){},
 			afteClose: function(){},
 		},options,{
 			id: "vclb"+$.now(),
@@ -48,6 +51,7 @@
 		}
 		var close = function(){
 			$set = setting;
+			$set.beforeClose();
 			$("#"+$set.id).addClass("closing").one(AnimationEvent(), function(event) {
 				$("#"+$set.id).remove();
 				$set.afteClose();
@@ -60,6 +64,7 @@
 
 		this.initialize = function(){
 			$set = setting;
+			$set.beforeLoad();
 			if ($set.youtubeEmbed && $set.youtubeUrl != "")
 			{
 				$set.content += formYoutube($set.youtubeUrl,$set.width,$set.height);
@@ -68,30 +73,6 @@
 			  $("<div>").addClass("vc-lb-container").append(
 			    $("<div>").addClass("vc-lb-body").html($set.content)
 			  )
-			  .bind("mousemove",function(e){
-			    var ClientX = e.clientX-this.getBoundingClientRect().left;
-			    var ClientY = e.clientY-this.getBoundingClientRect().top;
-			    var eleX = this.offsetWidth - 30
-			    var eleY = 30;
-			    if (ClientX >= eleX && ClientY <= eleY)
-			      $(this).addClass("onClose");
-			    else
-			      $(this).removeClass("onClose");
-			  })
-			  .bind("touchstart click",function(e){
-			    if ($set.close_btn)
-			    {
-			      var ClientX = e.clientX-this.getBoundingClientRect().left;
-			      var ClientY = e.clientY-this.getBoundingClientRect().top;
-			      var eleX = this.offsetWidth - 30
-			      var eleY = 30;
-
-			      if (ClientX >= eleX && ClientY <= eleY)
-			      {
-							close();
-			      }
-			    }
-			  })
 			).append($("<div>").addClass("vc-lb-backdrag")
 			  .bind("click",function(e){
 			    if (e.target == $(this)[0] && $set.backdrag_close)
@@ -100,11 +81,15 @@
 			    }
 			  })
 			);
+			if ($set.close_btn) $set.ele.find(".vc-lb-container").prepend($('<div class="vc-lb-closebutton" />').bind('click',function(e){
+				close();
+			}));
 			if ($set.isIE) $set.ele.addClass("isIE");
 			if ($set.width !== null) $set.ele.css({"width":$set.width});
 			if ($set.height !== null) $set.ele.css({"height":$set.height});
 
 			$("body").append($set.ele);
+			$set.afterLoad();
 			return this;
 		}
 

@@ -1,5 +1,5 @@
 (function($){
-	$.fn.vcGallery = function(options){
+	$.fn.vcSilder = function(options){
 		var setting = $.extend({
 			width: "570px",
 			height: "78.95%",
@@ -27,11 +27,11 @@
 			width = width * -1;
 			if (ele.hasClass("vcgOnPrev"))
 			{
-				removeEle = ele.find(".vc-gallery-item:not(.removing)").last();
+				removeEle = ele.find(".vc-silder-item:not(.removing)").last();
 				var newEle = removeEle.clone().css({"margin-left":width});
 				removeEle.addClass("removing");
 				setting.ele.prepend(newEle);
-				ele.find(".vc-gallery-item.current").removeClass("current").prev().addClass("current");
+				ele.find(".vc-silder-item.current").removeClass("current").prev().addClass("current");
 				newEle.animate({"margin-left":0},setting.speed,function(){
 					$(this).css({"margin-left":""});
 					removeEle.remove();
@@ -39,11 +39,11 @@
 			}
 			else
 			{
-				removeEle = ele.find(".vc-gallery-item:not(.removing)").first();
+				removeEle = ele.find(".vc-silder-item:not(.removing)").first();
 				var newEle = removeEle.clone().removeClass("current");
 				removeEle.addClass("removing");
 				setting.ele.append(newEle);
-				ele.find(".vc-gallery-item.current").removeClass("current").next().addClass("current");
+				ele.find(".vc-silder-item.current").removeClass("current").next().addClass("current");
 				removeEle.animate({"margin-left":width},setting.speed,function(){
 					removeEle.remove();
 				});
@@ -51,13 +51,13 @@
 		}
 
 		var animation = function() {
-			var ele = setting.ele.parent(".vc-gallery-wrapper");
+			var ele = setting.ele.parent(".vc-silder-wrapper");
 			var width = ele.outerWidth()*-1;
-			removeEle = ele.find(".vc-gallery-item:not(.removing)").first();
+			removeEle = ele.find(".vc-silder-item:not(.removing)").first();
 			var newEle = removeEle.clone();
 			removeEle.addClass("removing");
 			setting.ele.append(newEle);
-			ele.find(".vc-gallery-item.current").removeClass("current").next().addClass("current");
+			ele.find(".vc-silder-item.current").removeClass("current").next().addClass("current");
 			removeEle.animate({"margin-left":width},setting.speed,function(){
 				removeEle.remove();
 				timmer = setTimeout(function(){animation();},setting.aspeed);
@@ -66,8 +66,8 @@
 
 		var change = function(ele){
 
-			var current = ele.find(".vc-gallery-item.current");
-			var list = ele.find(".vc-gallery-item");
+			var current = ele.find(".vc-silder-item.current");
+			var list = ele.find(".vc-silder-item");
 			var width = ele.outerWidth();
 			if (list.length == setting.items)
 				return false;
@@ -94,10 +94,10 @@
 		}
 
 		this.initialize = function(){
-			wrapper = $('<div>').addClass("vc-gallery-wrapper");
-			setting.ele.addClass("vc-gallery-container");
-			setting.ele.children("*").addClass("vc-gallery-item");
-			setting.ele.children(".vc-gallery-item").first().addClass("current");
+			wrapper = $('<div>').addClass("vc-silder-wrapper");
+			setting.ele.addClass("vc-silder-container");
+			setting.ele.children("*").addClass("vc-silder-item");
+			setting.ele.children(".vc-silder-item").first().addClass("current");
 
 			wrapper.bind('mousemove', function( e ){
 				var ClientX = e.clientX-this.getBoundingClientRect().left;
@@ -121,7 +121,7 @@
 			});
 			setting.ele.wrap(wrapper);
 			setting.wrapper = setting.ele.parent();
-			setting.wrapper.append($("<div>").addClass("vs-gallery-overlayer"));
+			setting.wrapper.append($("<div>").addClass("vs-Silder-overlayer"));
 
 			if (setting.width !== null)
 			{
@@ -129,12 +129,12 @@
 				var wrapperW = temp.outerWidth()*setting.items;
 				setting.wrapper.css({width: wrapperW});
 				setting.width = setting.wrapper.outerWidth()/setting.items;
-				setting.ele.children(".vc-gallery-item").css({width:setting.width});
+				setting.ele.children(".vc-silder-item").css({width:setting.width});
 			}
 
 			if (setting.height !== null)
 			{
-				setting.wrapper.children(".vs-gallery-overlayer").css({"padding-bottom":setting.height});
+				setting.wrapper.children(".vs-Silder-overlayer").css({"padding-bottom":setting.height});
 			}
 			if (setting.loop && setting.animate)
 			{
@@ -144,7 +144,7 @@
 		};
 		this.winResize = function(){
 			setting.width = setting.wrapper.outerWidth()/setting.items;
-			setting.ele.children(".vc-gallery-item").css({width:setting.width});
+			setting.ele.children(".vc-silder-item").css({width:setting.width});
 		}
 		$(window).resize(function(){
 			setting.ele.winResize();
